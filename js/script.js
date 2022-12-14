@@ -1,3 +1,4 @@
+// // // RECUPERER LES ARTICLES DANS LA PAGE D'ACCUEIL // // //
 // Function pour appeler les articles et boucler dessus
 (async function () {
   const articles = await getArticles();
@@ -7,7 +8,7 @@
   }
 })();
 
-// Function pour appeler l'API
+// Récupération des articles de l'API
 function getArticles() {
   return fetch("http://localhost:3000/api/products")
     .then(function (httpBodyResponse) {
@@ -22,7 +23,8 @@ function getArticles() {
     });
 }
 
-// Function pour afficher les articles
+// // // AFFICHER LES ARTICLES DANS LA PAGE D'ACCUEIL // // //
+// Function répartition des données de l'API dans le DOM
 function displayArticle(article) {
   // Insertion de l'élément "a"
   let productLink = document.createElement("a");
