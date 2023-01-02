@@ -9,13 +9,15 @@ fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((res) => handleData(res));
 
-// Function creation de variables et appelle des functions
+// Function creation de variables
 function handleData(sofa) {
   const { altTxt, colors, description, imageUrl, name, price } = sofa;
   altText = altTxt;
   imgUrl = imageUrl;
   articleName = name;
   itemPrice = price;
+
+  // Appelle des functions
   makeImage(altTxt, imageUrl);
   makeTitle(name);
   makePrice(price);
@@ -78,6 +80,16 @@ function handleClick() {
   redirectToCart();
 }
 
+// Function fenêtre pop-up non selection de couleur et quantité
+function isOrderInvalid(color, quantity) {
+  if (color == null || color == "" || quantity == null || quantity == 0) {
+    alert(
+      "Veuillez s'il vous plait séléctionner une couleur et une quantité au produit."
+    );
+    return true;
+  }
+}
+
 // Function récupération des options de l'article à ajouter au panier
 function saveOrder(color, quantity) {
   const key = `${id}-${color}`;
@@ -93,16 +105,6 @@ function saveOrder(color, quantity) {
 
   //Initialisation du local storage
   localStorage.setItem(key, JSON.stringify(data));
-}
-
-// Function fenêtre pop-up non selection de couleur et quantité
-function isOrderInvalid(color, quantity) {
-  if (color == null || color == "" || quantity == null || quantity == 0) {
-    alert(
-      "Veuillez s'il vous plait séléctionner une couleur et une quantité au produit."
-    );
-    return true;
-  }
 }
 
 // Function redirection vers la page panier
