@@ -201,7 +201,7 @@ function deleteArticleFromPage(item) {
   articleToDelete.remove();
 }
 
-// // // GERER LES ARTICLES DANS LA PAGE CART // // //
+// // // GERER LE FORMULAIRE DANS LA PAGE CART // // //
 // Button confirmation du form pour commander les articles
 const orderButton = document.querySelector("#order");
 orderButton.addEventListener("click", (e) => submitForm(e));
