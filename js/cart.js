@@ -214,6 +214,10 @@ function submitForm(e) {
     return;
   }
 
+  if (isFirstNameInvalid()) return;
+  if (isLastNameInvalid()) return;
+  if (isAddressInvalid()) return;
+  if (isCityInvalid()) return;
   if (isEmailInvalid()) return;
 
   const body = makeRequestBody();
@@ -266,10 +270,59 @@ function getIdsFromCache() {
   return ids;
 }
 
+// Function alert prénom mal rempli
+function isFirstNameInvalid() {
+  const firstName = document.querySelector("#firstName").value;
+  const regex = /^[a-z ,.'-]+$/i;
+  if (regex.test(firstName) === false) {
+    alert("Veuillez s'il vous plait remplir le champ du prénom correctement.");
+    return true;
+  }
+  return false;
+}
+
+// Function alert nom mal rempli
+function isLastNameInvalid() {
+  const lastName = document.querySelector("#lastName").value;
+  const regex = /^[a-z ,.'-]+$/i;
+  if (regex.test(lastName) === false) {
+    alert("Veuillez s'il vous plait remplir le champ du nom correctement.");
+    return true;
+  }
+  return false;
+}
+
+// Function alert adresse mal rempli
+function isAddressInvalid() {
+  const address = document.querySelector("#address").value;
+  const regex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
+  if (regex.test(address) === false) {
+    alert(
+      "Veuillez s'il vous plait remplir le champ de l'adresse correctement."
+    );
+    return true;
+  }
+  return false;
+}
+
+// Function alert ville mal rempli
+function isCityInvalid() {
+  const city = document.querySelector("#city").value;
+  const regex = /^[a-z ,.'-]+$/i;
+  if (regex.test(city) === false) {
+    alert(
+      "Veuillez s'il vous plait remplir le champ de la ville correctement."
+    );
+    return true;
+  }
+  return false;
+}
+
 // Function alert email mal rempli
 function isEmailInvalid() {
   const email = document.querySelector("#email").value;
-  const regex = /^[A-Za-z0-9+_.-]+@(.+)$/;
+  const regex =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (regex.test(email) === false) {
     alert("Veuillez s'il vous plait remplir le champ de l'email correctement.");
     return true;
