@@ -1,4 +1,4 @@
-// // // GERER LES ARTICLES DANS LA PAGE CART // // //
+// // // GERER LES ARTICLES DANS LA PAGE PANIER // // //
 //Recuperation des articles dans le local storage
 const cart = [];
 
@@ -201,7 +201,7 @@ function deleteArticleFromPage(item) {
   articleToDelete.remove();
 }
 
-// // // GERER LE FORMULAIRE DANS LA PAGE CART // // //
+// // // GERER LE FORMULAIRE DANS LA PAGE PANIER // // //
 // Button confirmation du form pour commander les articles
 const orderButton = document.querySelector("#order");
 orderButton.addEventListener("click", (e) => submitForm(e));
