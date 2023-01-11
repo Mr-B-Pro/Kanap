@@ -1,10 +1,24 @@
 // // // GERER LES ARTICLES DANS LA PAGE PANIER // // //
-//Recuperation des articles dans le local storage
-const cart = [];
+let articleFromServer = [];
+let cart = [];
 
-retrieveItemsFromCache();
-cart.forEach((item) => displayItem(item));
+// Récupération des prix des articles dans l'API
+fetch(`http://localhost:3000/api/products/`)
+  .then((response) => response.json())
+  .then((res) => {
+    articleFromServer = res;
+    retrieveItemsFromCache();
+    articleFromServer.forEach((articleServer) => {
+      cart.forEach((canapLocal, indx) => {
+        if (canapLocal.id === articleServer._id) {
+          cart[indx].price = articleServer.price;
+        }
+      });
+    });
+    cart.forEach((item) => displayItem(item));
+  });
 
+//Recuperation des détails des articles dans le local storage
 function retrieveItemsFromCache() {
   const numberOfItems = localStorage.length;
 
