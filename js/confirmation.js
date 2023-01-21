@@ -3,7 +3,10 @@ const orderId = getOrderId();
 displayOrderId(orderId);
 removeAllCache();
 
-// Function recuperation des params
+// Recupération de l'orderId dans l'url de la page produit
+// window.location.search = récupére l’url à partir du “?”
+// new URLSearchParams = fabrique une nouvelle chaîne de requête
+// get = renvoir la premiere valeur associée au param de recherche
 function getOrderId() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);

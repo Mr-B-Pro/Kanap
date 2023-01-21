@@ -1,8 +1,10 @@
 // // // GERER LES ARTICLES DANS LA PAGE PANIER // // //
+// Tableau hors localStorage
 let articleFromServer = [];
+// Tableau localStorage
 let cart = [];
 
-// Récupération des prix des articles dans l'API
+// Récupération des données du canapé dans l'API avec fetch, boucle sur les tableaux et affichage des canapés
 fetch(`http://localhost:3000/api/products/`)
   .then((response) => response.json())
 
@@ -22,7 +24,11 @@ fetch(`http://localhost:3000/api/products/`)
     cart.forEach((item) => displayItem(item));
   });
 
-//Recuperation des détails des articles dans le local storage
+//Recuperation des caractéritiques du canapé dans le local storage
+// storage.lenght = retourne nombre d'items dans le storage
+// storage.getItem = renvoie valeur associée à la clé
+// storage.key = parcourt clé présente dans storage et affiche valeurs
+// JSON.parse = analyse string JSON pour changer en objet
 function retrieveItemsFromCache() {
   const numberOfItems = localStorage.length;
 
@@ -33,7 +39,7 @@ function retrieveItemsFromCache() {
   }
 }
 
-// Function affichage des articles
+// Function créations des canapés et de leurs données dans le DOM
 function displayItem(item) {
   const article = makeArticle(item);
 
@@ -43,18 +49,13 @@ function displayItem(item) {
   const cardItemContent = makeCartContent(item);
   article.appendChild(cardItemContent);
 
-  // Appelle des functions
+  // Appelle des functions qui affiche l'article, Calcul la quantité totale, Calcul le prix total
   displayArticle(article);
   displayTotalQuantity();
   displayTotalPrice();
 }
 
-// Function insertion de la div parent section
-function displayArticle(article) {
-  document.querySelector("#cart__items").appendChild(article);
-}
-
-// Function insertion de la div parent article
+// Function création de la div article
 function makeArticle(item) {
   const article = document.createElement("article");
   article.classList.add("card__item");
@@ -63,7 +64,12 @@ function makeArticle(item) {
   return article;
 }
 
-// Function insertion de la div image et l'image
+// Function insertion de l'article dans la section
+function displayArticle(article) {
+  document.querySelector("#cart__items").appendChild(article);
+}
+
+// Function insertion de la div img et l'img
 function makeImageDiv(item) {
   const div = document.createElement("div");
   div.classList.add("cart__item__img");
@@ -80,6 +86,7 @@ function makeCartContent(item) {
   const cardItemContent = document.createElement("div");
   cardItemContent.classList.add("cart__item__content");
 
+  // Appelle des functions qui crée le contenu de la description, Crée une div container
   const description = makeDescription(item);
   const settings = makeSettings(item);
 
@@ -88,7 +95,7 @@ function makeCartContent(item) {
   return cardItemContent;
 }
 
-// Function insertion du contenu de la description
+// Function insertion de la div description et du contenu de la description
 function makeDescription(item) {
   const description = document.createElement("div");
   description.classList.add("cart__item__content__description");
@@ -108,17 +115,18 @@ function makeDescription(item) {
   return description;
 }
 
-// Function insertion de la div parent quantité
+// Function insertion de la div parent quantité et  button supprimé
 function makeSettings(item) {
   const settings = document.createElement("div");
   settings.classList.add("cart__item__content__settings");
 
+  // Appelle des function qui ajoute la quantité, Supprime le canapé
   addQuantityToSettings(settings, item);
   addDeleteToSettings(settings, item);
   return settings;
 }
 
-// Function insertion du contenu de la quantité
+// Function insertion de la div quantité et son contenu
 function addQuantityToSettings(settings, item) {
   const quantity = document.createElement("div");
   quantity.classList.add("cart__item__content__settings__quantity");
@@ -144,6 +152,7 @@ function addQuantityToSettings(settings, item) {
 }
 
 // Function insertion du prix total
+// Reduce = réduit plusieurs valeurs en une seule
 function displayTotalPrice() {
   getPrice();
   const totalPrice = document.querySelector("#totalPrice");
@@ -154,6 +163,7 @@ function displayTotalPrice() {
   totalPrice.textContent = total;
 }
 
+// Function boucle sur les tableaux et affichage du prix hors localStorage
 function getPrice() {
   articleFromServer.forEach((articleServer) => {
     cart.forEach((sofaLocal, indx) => {
@@ -165,6 +175,7 @@ function getPrice() {
 }
 
 // Function insertion de la quantité totale d'articles
+// Reduce = réduit plusieurs valeurs en une seule
 function displayTotalQuantity() {
   getPrice();
   const totalQuantity = document.querySelector("#totalQuantity");
@@ -173,18 +184,20 @@ function displayTotalQuantity() {
 }
 
 // Function insertion du prix et de la quantité totale
+// Find = renvoie la valeur de l'élement qui respecte les conditions
 function updatePriceAndQuantity(id, newValue, item) {
   const itemToUpdate = cart.find((item) => item.id === id);
   itemToUpdate.quantity = Number(newValue);
   item.quantity = itemToUpdate.quantity;
 
-  // Appelle des functions
+  // Appelle des functions pour la quantité totale, Le prix total, Sauvegarde des nouvelles valeurs
   displayTotalQuantity();
   displayTotalPrice();
   saveNewDataToCache(item);
 }
 
 // Function sauvegarder dans le cache
+// setItem = duo clé valeur sont ajoutés
 function saveNewDataToCache(item) {
   delete item.price;
   const dataToSave = JSON.stringify(item);
@@ -205,13 +218,15 @@ function addDeleteToSettings(settings, item) {
 }
 
 // Function pour supprimer un article
+// findIndex = renvoie l'index du premier élement du tableau qui satisfait la condition d'une function, si la function renvoie false le résultat vaut -1
+// splice = modifie le contenu d'un tableau
 function deleteItem(item) {
   const itemToDelete = cart.findIndex(
     (product) => product.id === item.id && product.color === item.color
   );
   cart.splice(itemToDelete, 1);
 
-  // Appelle des functions
+  // Appelle les functions pour le prix total, Quantité totale, Supprime la key, Supprime les datas de la page
   displayTotalPrice();
   displayTotalQuantity();
   deleteDataFromCache(item);
@@ -219,12 +234,14 @@ function deleteItem(item) {
 }
 
 // Function supprimer dans le cache
+// RemoveItem = passe une clé en argument supprime la ressource avec le nom de la clé qui correspond au storage
 function deleteDataFromCache(item) {
   const key = `${item.id}-${item.color}`;
   localStorage.removeItem(key);
 }
 
 // Function supprimer article de la page
+//  Remove retire l'élement du DOM
 function deleteArticleFromPage(item) {
   const articleToDelete = document.querySelector(
     `article[data-id="${item.id}"][data-color="${item.color}"]`

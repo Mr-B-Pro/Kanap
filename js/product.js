@@ -1,15 +1,18 @@
 // // // AFFICHER LES ARTICLES DANS LA PAGE PRODUITS // // //
-// Recupération de l'ID
+// Recupération de l'id dans l'url de la page produit
+// window.location.search = récupére l’url à partir du “?”
+// new URLSearchParams = fabrique une nouvelle chaîne de requête
+// get = renvoir la premiere valeur associée au param de recherche
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get("id");
 
-// Récupération des articles de l'API
+// Récupération des données du canapé dans l'API avec fetch url + id
 fetch(`http://localhost:3000/api/products/${id}`)
   .then((response) => response.json())
   .then((res) => handleData(res));
 
-// Function creation de variables
+// Function creation de variables pour les données de l'API
 function handleData(sofa) {
   const { altTxt, colors, description, imageUrl, name, price } = sofa;
   altText = altTxt;
@@ -17,7 +20,7 @@ function handleData(sofa) {
   articleName = name;
   itemPrice = price;
 
-  // Appelle des functions
+  // Appelle des functions qui affichent les caractéristiques du canapé
   makeImage(altTxt, imageUrl);
   makeTitle(name);
   makePrice(price);
@@ -25,7 +28,7 @@ function handleData(sofa) {
   makeColors(colors);
 }
 
-// Function insertion des options de couleurs
+// Function création insertion du select et des options de couleurs
 function makeColors(colors) {
   const select = document.querySelector("#colors");
 
@@ -37,7 +40,7 @@ function makeColors(colors) {
   });
 }
 
-// Function insertion du name "H1"
+// Function insertion du name "h1"
 function makeTitle(name) {
   const h1 = document.querySelector("#title");
   h1.textContent = name;
@@ -49,7 +52,7 @@ function makePrice(price) {
   span.textContent = price;
 }
 
-// Function insertion de l'image et du "altTxt"
+// Function création et insertion de l'"img"
 function makeImage(altTxt, imageUrl) {
   const image = document.createElement("img");
   image.alt = altTxt;
@@ -65,22 +68,22 @@ function makeDescription(description) {
 }
 
 // // // GERER LES ARTICLES DANS LA PAGE PRODUITS // // //
-// Ecoute du panier
+// Ecoute du button pour la vérification de la couleur et la quantité à ajouter au panier
 const button = document.querySelector("#addToCart");
 button.addEventListener("click", handleClick);
 
-// Function recupération du choix de la couleur et de la quantité
+// Function vérification et recupération de la couleur et de la quantité
 function handleClick() {
   const color = document.querySelector("#colors").value;
   const quantity = document.querySelector("#quantity").value;
 
-  // Appelle des functions
+  // Appelle des functions vérification et alert de couleur et quantité, Clef et objets pour le localStorage, Redirection vers la page panier
   if (isOrderInvalid(color, quantity)) return;
   saveOrder(color, quantity);
   redirectToCart();
 }
 
-// Function fenêtre pop-up non selection de couleur et quantité
+// Function fenêtre alert si il n'y a pas de couleur et de quantité selectionnées
 function isOrderInvalid(color, quantity) {
   if (color == null || color == "" || quantity == null || quantity == 0) {
     alert(
@@ -90,11 +93,12 @@ function isOrderInvalid(color, quantity) {
   }
 }
 
-// Function récupération des options de l'article à ajouter au panier
+// Function clef et objets pour le localStorage
 function saveOrder(color, quantity) {
   const key = `${id}-${color}`;
+  // JSON.parse = analyse string JSON pour changer en objet
+  // getItem = renvoie la valeur associée à la clé
   const sofaLocal = JSON.parse(localStorage.getItem(key));
-
   let data = null;
 
   if (sofaLocal) {
@@ -118,6 +122,7 @@ function saveOrder(color, quantity) {
   }
 
   //Initialisation du local storage
+  // setItem = duo clé valeur sont ajoutés
   localStorage.setItem(key, JSON.stringify(data));
 }
 

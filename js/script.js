@@ -1,5 +1,5 @@
 // // // RECUPERER LES ARTICLES DANS LA PAGE D'ACCUEIL // // //
-// Function pour appeler les articles et boucler dessus
+// Function async qui s'auto appelle pour apppeler fetch, boucle sur le tableau et affichage des canapés
 (async function () {
   const articles = await getArticles();
 
@@ -8,7 +8,7 @@
   }
 })();
 
-// Récupération des articles de l'API
+// Function récupération des canapés dans l'API avec fetch
 function getArticles() {
   return fetch("http://localhost:3000/api/products")
     .then(function (httpBodyResponse) {
@@ -24,9 +24,9 @@ function getArticles() {
 }
 
 // // // AFFICHER LES ARTICLES DANS LA PAGE D'ACCUEIL // // //
-// Function répartition des données de l'API dans le DOM
+// Function créations des canapés et de leurs données dans le DOM
 function displayArticle(article) {
-  // Insertion de l'élément "a"
+  // Insertion de l'élément "a" et de l'url de la page produit + l'id du canapé
   let productLink = document.createElement("a");
   productLink.href = `product.html?id=${article._id}`;
   document.querySelector("#items").appendChild(productLink);
@@ -35,13 +35,13 @@ function displayArticle(article) {
   let productArticle = document.createElement("article");
   productLink.appendChild(productArticle);
 
-  // Insertion de l'image
+  // Insertion de l'"img"
   let productImg = document.createElement("img");
   productArticle.appendChild(productImg);
   productImg.src = article.imageUrl;
   productImg.alt = article.altTxt;
 
-  // Insertion du titre "h3"
+  // Insertion du nom "h3"
   let productName = document.createElement("h3");
   productArticle.appendChild(productName);
   productName.classList.add("productName");
