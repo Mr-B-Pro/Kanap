@@ -8,7 +8,7 @@
   }
 })();
 
-// Function récupération des canapés dans l'API avec fetch
+// Function fetch récupération des canapés dans l'API
 function getArticles() {
   return fetch("http://localhost:3000/api/products")
     .then(function (httpBodyResponse) {

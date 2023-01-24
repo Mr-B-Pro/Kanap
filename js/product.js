@@ -1,5 +1,6 @@
 // // // AFFICHER LES ARTICLES DANS LA PAGE PRODUITS // // //
-// Recupération de l'id dans l'url de la page produit
+
+// Recupération et affichage de l'id dans l'url de la page produit
 // window.location.search = récupére l’url à partir du “?”
 // new URLSearchParams = fabrique une nouvelle chaîne de requête
 // get = renvoir la premiere valeur associée au param de recherche
@@ -28,7 +29,7 @@ function handleData(sofa) {
   makeColors(colors);
 }
 
-// Function création insertion du select et des options de couleurs
+// Function création et insertion du select et des options de couleurs
 function makeColors(colors) {
   const select = document.querySelector("#colors");
 
@@ -68,7 +69,8 @@ function makeDescription(description) {
 }
 
 // // // GERER LES ARTICLES DANS LA PAGE PRODUITS // // //
-// Ecoute du button pour la vérification de la couleur et la quantité à ajouter au panier
+
+// Sélection et écoute du button pour la vérification de la couleur et la quantité à ajouter au panier
 const button = document.querySelector("#addToCart");
 button.addEventListener("click", handleClick);
 
@@ -93,11 +95,11 @@ function isOrderInvalid(color, quantity) {
   }
 }
 
-// Function clef et objets pour le localStorage
+// Function créer clef et objets pour le localStorage et prévoir si on a deux fois le meme canapé
+// JSON.parse = analyse string JSON pour changer en objet
+// getItem = renvoie la valeur associée à la clé
 function saveOrder(color, quantity) {
   const key = `${id}-${color}`;
-  // JSON.parse = analyse string JSON pour changer en objet
-  // getItem = renvoie la valeur associée à la clé
   const sofaLocal = JSON.parse(localStorage.getItem(key));
   let data = null;
 

@@ -1,4 +1,5 @@
 // // // GERER LES ARTICLES DANS LA PAGE PANIER // // //
+
 // Tableau hors localStorage
 let articleFromServer = [];
 // Tableau localStorage
@@ -39,7 +40,7 @@ function retrieveItemsFromCache() {
   }
 }
 
-// Function créations des canapés et de leurs données dans le DOM
+// Function hub de créations des canapés et de leurs données dans le DOM
 function displayItem(item) {
   const article = makeArticle(item);
 
@@ -115,7 +116,7 @@ function makeDescription(item) {
   return description;
 }
 
-// Function insertion de la div parent quantité et  button supprimé
+// Function insertion de la div parent quantité et le button supprimé
 function makeSettings(item) {
   const settings = document.createElement("div");
   settings.classList.add("cart__item__content__settings");
@@ -163,7 +164,7 @@ function displayTotalPrice() {
   totalPrice.textContent = total;
 }
 
-// Function boucle sur les tableaux et affichage du prix hors localStorage
+// Function boucle sur les tableaux pour préparer l'affichage du prix hors localStorage
 function getPrice() {
   articleFromServer.forEach((articleServer) => {
     cart.forEach((sofaLocal, indx) => {
@@ -217,7 +218,7 @@ function addDeleteToSettings(settings, item) {
   settings.appendChild(div);
 }
 
-// Function pour supprimer un article
+// Function pour choisir l'article à supprimer
 // findIndex = renvoie l'index du premier élement du tableau qui satisfait la condition d'une function, si la function renvoie false le résultat vaut -1
 // splice = modifie le contenu d'un tableau
 function deleteItem(item) {
@@ -250,11 +251,12 @@ function deleteArticleFromPage(item) {
 }
 
 // // // GERER LE FORMULAIRE DANS LA PAGE PANIER // // //
+
 // Button confirmation du form pour commander les articles
 const orderButton = document.querySelector("#order");
 orderButton.addEventListener("click", (e) => submitForm(e));
 
-// Declanchement des message sous les input du form
+// Création variables et déclenchement des message sous les input du form
 const firstName = document.querySelector("#firstName");
 firstName.addEventListener("input", () => {
   isFirstNameInvalid();
@@ -276,7 +278,7 @@ email.addEventListener("input", () => {
   isEmailInvalid();
 });
 
-// Function alert selectionner des articles avant d'acheter
+// Function alert pour selectionner des articles avant d'acheter, fetch, et orderId dans l'url
 function submitForm(e) {
   e.preventDefault();
   if (cart.length === 0) {
@@ -290,6 +292,8 @@ function submitForm(e) {
   if (isCityInvalid()) return;
   if (isEmailInvalid()) return;
 
+  // POST = envoi des données le body est stringify
+  // header Content-Type application/json = précise le type de données qu’on va envoyer
   const body = makeRequestBody();
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
@@ -306,7 +310,7 @@ function submitForm(e) {
     .catch((err) => console.error(err));
 }
 
-// Function recup de coordonnées client et construction d'un objet pour le form
+// Function création variable pour recup de coordonnées client et construction d'un objet pour le form
 function makeRequestBody() {
   const form = document.querySelector(".cart__order__form");
   const firstName = form.elements.firstName.value;
@@ -328,7 +332,9 @@ function makeRequestBody() {
   return body;
 }
 
-// Function recup de l'id et split de la color
+// Function recup de l'id et split la color de la clef
+// storage.key = retourne la clé contenue dans storage.
+// split() = divise une chaîne de caractères
 function getIdsFromCache() {
   const numberOfProducts = localStorage.length;
   const ids = [];
@@ -340,7 +346,7 @@ function getIdsFromCache() {
   return ids;
 }
 
-// Function alert prénom mal rempli
+// Function envoi message si prénom mal rempli
 function isFirstNameInvalid() {
   const firstName = document.querySelector("#firstName").value;
   const regex = /^[a-z ,.'-]+$/i;
@@ -354,7 +360,7 @@ function isFirstNameInvalid() {
   return false;
 }
 
-// Function alert nom mal rempli
+// Function envoi message si nom mal rempli
 function isLastNameInvalid() {
   const lastName = document.querySelector("#lastName").value;
   const regex = /^[a-z ,.'-]+$/i;
@@ -368,7 +374,7 @@ function isLastNameInvalid() {
   return false;
 }
 
-// Function alert adresse mal rempli
+// Function envoi message si adresse mal rempli
 function isAddressInvalid() {
   const address = document.querySelector("#address").value;
   const regex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
@@ -382,7 +388,7 @@ function isAddressInvalid() {
   return false;
 }
 
-// Function alert ville mal rempli
+// Function envoi message si ville mal rempli
 function isCityInvalid() {
   const city = document.querySelector("#city").value;
   const regex = /^[a-z ,.'-]+$/i;
@@ -396,7 +402,7 @@ function isCityInvalid() {
   return false;
 }
 
-// Function alert email mal rempli
+// Function envoi message si email mal rempli
 function isEmailInvalid() {
   const email = document.querySelector("#email").value;
   const regex =
